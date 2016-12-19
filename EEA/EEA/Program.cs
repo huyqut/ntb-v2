@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
-namespace EEA
+namespace NumberTheory
 {
     public class Helper
     {
@@ -13,7 +13,7 @@ namespace EEA
 
         }
 
-        public List<Tuple<BigInteger, BigInteger, BigInteger>> EEA(BigInteger a, BigInteger b)
+        public static List<Tuple<BigInteger, BigInteger, BigInteger>> EEA(BigInteger a, BigInteger b)
         {
             List<Tuple<BigInteger, BigInteger, BigInteger>> ret = new List<Tuple<BigInteger, BigInteger, BigInteger>>();
             BigInteger r = a;
@@ -38,6 +38,7 @@ namespace EEA
 
                 ret.Add(new Tuple<BigInteger, BigInteger, BigInteger>(r, s, t));
             }
+            ret.Add(new Tuple<BigInteger, BigInteger, BigInteger>(0, s_1, t_1));
             return ret;
         }
 
@@ -189,6 +190,7 @@ namespace EEA
     {
         static void Main(string[] args)
         {
+            Console.WriteLine(RationalReconstruction.Calculate(7197183, 1000));
         }
     }
 }
