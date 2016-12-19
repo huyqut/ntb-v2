@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
+
 namespace NumberTheory
 {
     public class Helper
@@ -42,7 +43,7 @@ namespace NumberTheory
             return ret;
         }
 
-        public BigInteger GCD(BigInteger a, BigInteger b)
+        public static BigInteger GCD(BigInteger a, BigInteger b)
         {
             if (a < b)
             {
@@ -62,33 +63,33 @@ namespace NumberTheory
             return r;
         }
 
-        public BigInteger ModularInverse(BigInteger a, BigInteger b, BigInteger n)
-        {
-            BigInteger d = GCD(n, a);
-            if (d.CompareTo(b) != 0)
-            {
-                Console.WriteLine("No solution");
-                return 0;
-            }
+        //public static BigInteger ModularInverse(BigInteger a, BigInteger b, BigInteger n)
+        //{
+        //    BigInteger d = GCD(n, a);
+        //    if (d.CompareTo(b) != 0)
+        //    {
+        //        Console.WriteLine("No solution");
+        //        return 0;
+        //    }
 
-            BigInteger a_1 = a / d, b_1 = b / d, n_1 = n / d;
-            BigInteger t;
-            if (n_1.CompareTo(1) <= 0)
-            {
-                t = 0;
-            }
-            else
-            {
-                var tmp = EEA(n_1, a_1);
-                t = tmp[tmp.Count - 2].Item3;
-                if (tmp[tmp.Count - 2].Item3.CompareTo(0) < 0)
-                    t += n_1;
-            }
+        //    BigInteger a_1 = a / d, b_1 = b / d, n_1 = n / d;
+        //    BigInteger t;
+        //    if (n_1.CompareTo(1) <= 0)
+        //    {
+        //        t = 0;
+        //    }
+        //    else
+        //    {
+        //        var tmp = EEA(n_1, a_1);
+        //        t = tmp[tmp.Count - 2].Item3;
+        //        if (tmp[tmp.Count - 2].Item3.CompareTo(0) < 0)
+        //            t += n_1;
+        //    }
 
-            return (t * b_1) % n_1;
-        }
+        //    return (t * b_1) % n_1;
+        //}
 
-        public BigInteger Power(BigInteger n, BigInteger exp)
+        public static BigInteger Power(BigInteger n, BigInteger exp)
         {
             byte[] exp_arr = exp.ToByteArray();
             BigInteger result = 1, tmp = n;
@@ -106,7 +107,7 @@ namespace NumberTheory
             return result;
         }
 
-        public BigInteger Sqrt(BigInteger n)
+        public static BigInteger Sqrt(BigInteger n)
         {
             byte[] n_arr = n.ToByteArray();
             int j = 0;
@@ -131,58 +132,22 @@ namespace NumberTheory
             return m;
         }
 
-        public Tuple<BigInteger, BigInteger> FermatTwoSquares(BigInteger p)
+        public static bool isPrime(BigInteger n)
         {
-            // Check if p is prime
-            // Check if p = 1 (mod 4)
-            if ((p % 4).CompareTo(1) != 0)
+            if (n < 2)
+                return false;
+            else if (n == 2)
+                return true;
+            else if (n % 2 == 0)
+                return false;
+
+            BigInteger tmp = Sqrt(n);
+            for (BigInteger i = 3; i <= tmp; i += 2)
             {
-                Console.WriteLine("No solution.");
-                return null;
+                if (n % i == 0)
+                    return false;
             }
-
-            Random rand = new Random();
-            BigInteger gamma, b;
-            Dictionary<int, bool> dict = new Dictionary<int, bool>();
-
-            do
-            {
-                int next = rand.Next();
-                while (dict.ContainsKey(next))
-                    next = rand.Next();
-                dict[next] = true;
-
-                gamma = new BigInteger(next);
-                b = Power(gamma, (p - 1) / 4) % p;
-
-            } while (((b * b) % p).CompareTo(p - 1) != 0);
-
-
-            Console.WriteLine("Running EEA on p = {0} and b = {1}", p, b);
-            var eea = EEA(p, b);
-
-            //Console.WriteLine(String.Format("{0, -5} | {1, -10} | {2, -10} | {3, -10}", "i", "r", "s", "t"));
-            //Console.WriteLine(new string('-', 47));
-            int i = 0;
-
-            Tuple<BigInteger, BigInteger> result = null;
-            BigInteger r_star = Sqrt(p) + 1;
-            //foreach (var item in eea)
-            //{
-            //    Console.WriteLine(String.Format("{0, 5} | {1, 10} | {2, 10} | {3, 10}", i, item.Item1, item.Item2, item.Item3));
-            //    ++i;
-            //}
-
-            for (i = 0; i < eea.Count; ++i)
-            {
-                if (eea[i].Item1 < r_star)
-                {
-                    result = new Tuple<BigInteger, BigInteger>(eea[i].Item1, eea[i].Item3);
-                    break;
-                }
-            }
-
-            return result;
+            return true;
         }
     }
 
@@ -190,6 +155,7 @@ namespace NumberTheory
     {
         static void Main(string[] args)
         {
+            Console.WriteLine(FermatsTwoSquares.Calculate(1009));
             Console.WriteLine(RationalReconstruction.Calculate(7197183, 1000));
         }
     }
