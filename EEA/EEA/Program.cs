@@ -41,6 +41,7 @@ namespace EEA
 
                 ret.Add(new Tuple<BigInteger, BigInteger, BigInteger>(r, s, t));
             }
+            ret.Add(new Tuple<BigInteger, BigInteger, BigInteger>(0, s_1, t_1));
             return ret;
         }
     }
